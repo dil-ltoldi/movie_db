@@ -1,4 +1,6 @@
 class MoviesController < ApplicationController
+  include ApplicationHelper
+
   require 'uri'
   require 'net/http'
 
@@ -7,40 +9,34 @@ class MoviesController < ApplicationController
   end
 
   def search
-    # query = params[:query]
+     query = params[:query]
+     @url = request.path
+     @current_page = params[:page].to_i.positive? ? params[:page].to_i : 1
+     puts @current_page
 
-    #if query.present?
-    #  if duplicate_search?(query)
-    #    puts 'volt ilyen query az elmult 2 percben'
-    #    return
-    #  end
-    #end
+     if query.present?
+       response = get_movies(query, @current_page)
+       movies_data = JSON.parse(response)
+       @movies = movies_data['results'].select { |movie| movie['poster_path'].present? }
+       @total_pages = movies_data['total_pages']
 
-    render plain: "oke", status: :forbidden
+       if @current_page.to_i > @total_pages.to_i
+         redirect_to "#{@url}?query=#{query}&page=#{@total_pages}"
+         return
+       end
+       @pages = pagination(@current_page.to_i, @total_pages.to_i)
+     end
+
+    render "index"
   end
 
   private
-  def duplicate_search?(query)
-    etag = generate_etag(query)
-
-    if stale?(etag: etag, public: true)
-      update_etag(query, etag)
-      return false
-    else
-      return true
-    end
+  def get_url
+    base_url + original_fullpath
   end
 
-  def generate_etag(query)
-    Digest::MD5.hexdigest(query.to_s)
-  end
-
-  def update_etag(query, etag)
-    Rails.cache.write("search_query_#{query}", etag, expires_in: 2.minutes)
-  end
-
-  def get_movies(query)
-    url = URI("https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=1&query=#{URI.encode_www_form_component(query)}")
+  def get_movies(query, page = 1)
+    url = URI("https://api.themoviedb.org/3/search/movie?include_adult=false&language=en-US&page=#{page}&query=#{URI.encode_www_form_component(query)}")
 
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true
