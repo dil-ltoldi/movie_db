@@ -1,11 +1,10 @@
 class MoviesController < ApplicationController
-  include ApplicationHelper
-
   def index
     render "index"
   end
 
   def search
+    begin
      query = search_params[:query]
      page = search_params[:page].to_i.positive? ? search_params[:page].to_i : 1
 
@@ -19,6 +18,7 @@ class MoviesController < ApplicationController
         movie.delete if movie.present?
 
         response = TmdbClient.get_movies(query, page)
+
         movie = Movie.find_or_create_by(query: query, page: page) do |m|
          m.response = response
          m.hit_count = 0
@@ -33,7 +33,14 @@ class MoviesController < ApplicationController
      end
 
      render "index"
+
+    rescue StandardError => e
+      Rails.logger.error("Hiba a controllerben")
+      redirect_to root_path
+    end
   end
+
+
 
   private
   # Separate class for example: TMDBClient
