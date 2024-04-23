@@ -1,4 +1,0 @@
-<%= form_with url: "/search", method: :get, :html => { :class=>"w-full bg-white", :style => 'width:100%; background:white; border-radius: 30px; height: 46px; display: flex; align-items: center; justify-content: space-between; font-family: "Source Sans Pro",Arial,sans-serif;' } do |form| %>
-  <%= form.text_field :query, placeholder: "Search...", :style => 'border: none; width: 100%; font-size: 1.1em; margin-left: 20px; font-family: "Source Sans Pro",Arial,sans-serif;' %>
-  <%= form.submit "Search",  :style => 'height: 46px; padding: 10px 26px; border: 0; font-weight: 600; background: linear-gradient(to right, rgba(30, 213, 169, 1) 0%, rgba(1, 180, 228, 1) 100%); border-radius: 30px; color: #fff;' %>
-<% end %>

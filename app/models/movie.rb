@@ -1,10 +1,12 @@
-# open struct would be better
-class Movie
-  attr_accessor :adult, :backdrop_path, :genre_ids, :id, :original_language, :original_title, :overview, :popularity, :poster_path, :release_date, :title, :video, :vote_average, :vote_count
+class Movie < ApplicationRecord
 
-  def initialize(attributes = {})
-    attributes.each do |key, value|
-      send("#{key}=", value) if respond_to?("#{key}=")
-    end
+  def data
+    movies_data = JSON.parse(response)
+    movies_data['results']
+  end
+
+  def total_pages
+    response_data = JSON.parse(response)
+    response_data['total_pages']
   end
 end

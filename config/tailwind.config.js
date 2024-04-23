@@ -14,6 +14,8 @@ module.exports = {
         SourceSansPro: ['"Source Sans Pro"', "Arial", "sans-serif"]
       },
       backgroundImage: {
+        gradient_message: 'linear-gradient(to right, #c0fecf 0, #1ed5a9 100%)',
+        gradient_search: "linear-gradient(to right, rgba(30, 213, 169, 1) 0%, rgba(1, 180, 228, 1) 100%)",
         search: "url('https://media.themoviedb.org/t/p/w1920_and_h600_multi_faces_filter(duotone,00192f,00baff)/u7OpeS4eckBSR1wFxFTuyy3FjHE.jpg')",
         card: "url('https://www.themoviedb.org/assets/2/v4/misc/trending-bg-39afc2a5f77e31d469b25c187814c0a2efef225494c038098d62317d923f8415.svg')"
       },
@@ -25,7 +27,7 @@ module.exports = {
       },
       fontFamily: {
         'ssp': ['"Source Sans Pro"','Arial','sans-serif']
-      }
+      },
     },
   },
   plugins: [

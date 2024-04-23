@@ -1,0 +1,25 @@
+<div class="mx-auto w-screen xl:max-w-page flex mt-[18px]">
+  <h2 class="mr-[20px] font-semibold text-[1.5em] font-ssp" >Movies loaded from</h2>
+  <div>
+    <div class="flex justify-start items-stretch border-[1px] border-solid border-[rgb(3,37,65)] rounded-3xl overflow-none">
+      <div class="relative top-0 left-0 z-1">
+        <h3 class="text-[1em] px-[20px] py-[4px] mb-0 inline-flex bg-[rgb(3,37,65)] font-semibold font-ssp items-center justify-center rounded-3xl">
+          <p class="w-full h-full bg-gradient_message bg-clip-text text-transparent">
+            <% if @hit_count.to_i.positive? %>
+              Cache
+            <% else %>
+              API
+            <% end %>
+          </p>
+        </h3>
+      </div>
+      <% if @hit_count.to_i.positive? %>
+        <div>
+          <h3 class="text-[1em] px-[20px] py-[4px] mb-0 inline-flex font-semibold font-ssp items-center justify-center rounded-3xl">
+            <%= @hit_count %>x
+          </h3>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

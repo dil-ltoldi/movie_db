@@ -1,37 +1,6 @@
-<%= render "search_container" %>
+<%= render "searchbox_container" %>
 <% if @movies.present? %>
-  <div class="mx-auto grid grid-cols-[repeat(5,calc(20%-16px))] py-[30px] gap-x-[20px] gap-y-[40px] w-screen xl:max-w-page bg-center">
-    <% @movies.each do |movie| %>
-      <div class="">
-        <div class="w-[90%] mx-auto relative rounded-2xl overflow-hidden">
-          <% if movie["poster_path"].present? %>
-            <img class="w-full" src="https://image.tmdb.org/t/p/w220_and_h330_face/<%= movie["poster_path"] %>" alt="">
-          <% end %>
-        </div>
-        <div class="pt-[10px]">
-          <h2 class='text-[1.2em] m-0 w-full font-semibold' style='font-family: "Source Sans Pro",Arial,sans-serif'>
-            <%= movie["title"] %>
-          </h2>
-          <p class="text-[rgba(0,0,0,.6)] text-[1.1em]" style='font-family: "Source Sans Pro",Arial,sans-serif'>
-            <%= movie["release_date"] %>
-          </p>
-        </div>
-      </div>
-    <% end %>
-  </div>
-  <div class="m-auto w-fit" style='font-family: "Source Sans Pro",Arial,sans-serif'>
-    <div class="flex gap-[8px]">
-      <% @pages.each do |pa| %>
-        <% if pa.is_a?(Integer) %>
-          <a href="/search?query=<%= params[:query] %>&page=<%= pa %>" class="w-[30px] h-[30px] leading-[30px] text-center text-[14px] transition-all rounded-xl <%= (pa != @current_page.to_i) ? 'bg-zinc-200 hover:text-white hover:bg-cyan-700 cursor-pointer' : 'text-white bg-cyan-700 cursor-not-allowed' %>">
-            <%= pa %>
-          </a>
-        <% else %>
-          <div class="w-[30px] h-[30px] leading-[30px] text-center text-[14px] cursor-not-allowed">
-            <%= pa %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
+  <%= render "messagebox" %>
+  <%= render "card_container" %>
+  <%= render "page_numbers" %>
 <% end %>

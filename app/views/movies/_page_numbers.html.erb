@@ -1,0 +1,15 @@
+<div class="m-auto w-fit font-ssp">
+    <div class="flex gap-[8px]">
+        <% @pages.each do |pa| %>
+          <% if pa.is_a?(Integer) %>
+          <a href="/search?query=<%= params[:query] %>&page=<%= pa %>" class="w-[30px] h-[30px] leading-[30px] text-center text-[14px] transition-all rounded-xl <%= (pa != @current_page.to_i) ? 'bg-zinc-200 hover:text-white hover:bg-cyan-700 cursor-pointer' : 'text-white bg-cyan-700 cursor-not-allowed' %>">
+              <%= pa %>
+          </a>
+          <% else %>
+          <div class="w-[30px] h-[30px] leading-[30px] text-center text-[14px] cursor-not-allowed">
+              <%= pa %>
+          </div>
+          <% end %>
+        <% end %>
+    </div>
+</div>
