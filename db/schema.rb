@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_22_123421) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_23_113320) do
   create_table "movies", force: :cascade do |t|
     t.string "query"
     t.string "response"
@@ -18,6 +18,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_22_123421) do
     t.integer "hit_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "total_pages"
     t.index ["id"], name: "index_movies_on_id"
   end
 

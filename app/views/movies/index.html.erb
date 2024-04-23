@@ -1,6 +1,12 @@
 <%= render "searchbox_container" %>
-<% if @movies.present? %>
-  <%= render "messagebox" %>
-  <%= render "card_container" %>
-  <%= render "page_numbers" %>
+<% if @movie.present? %>
+  <% if @movie.list.length > 0 %>
+    <%= render "messagebox" %>
+    <%= render "card_container" %>
+    <%= render "page_numbers" %>
+  <% else %>
+    <div class="mx-auto w-screen xl:max-w-page flex justify-center mt-[18px]">
+      <h2 class="mr-[20px] font-semibold text-[2em] font-ssp" >No movies found for this search!</h2>
+    </div>
+  <% end %>
 <% end %>

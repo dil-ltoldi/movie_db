@@ -1,5 +1,5 @@
 <div class="mx-auto px-[15px] lg:px-0 md:px-none grid grid-cols-[repeat(2,1fr)] md:grid-cols-[repeat(3,1fr)] lg:grid-cols-[repeat(5,1fr)] py-[30px] gap-x-[20px] gap-y-[40px] w-screen xl:max-w-page bg-center">
-  <% @movies.each do |movie| %>
-    <%= render "card", movie: movie %>
-  <% end %>
+    <% @movie.list.each do |movie| %>
+      <%= render "card", movie: movie %>
+    <% end %>
 </div>

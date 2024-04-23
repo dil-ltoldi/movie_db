@@ -6,44 +6,31 @@ class MoviesController < ApplicationController
   end
 
   def search
-     query = params[:query]
-     @url = request.path
-     @current_page = params[:page].to_i.positive? ? params[:page].to_i : 1
+     query = search_params[:query]
+     page = search_params[:page].to_i.positive? ? search_params[:page].to_i : 1
 
-     movie = Movie.find_by(query: query, page: @current_page)
+     movie = Movie.find_by(query: query, page: page)
 
      if movie.present? && ((Time.now - movie.created_at) <= 120)
        movie.with_lock do
-         movie.increment!(:hit_count)
+        movie.increment!(:hit_count)
        end
-       @movies = movie.data
-       @total_pages = movie.total_pages
-       @hit_count = movie.hit_count
      else
-       if movie.present?
-         movie.delete
-       end
-       response = TmdbClient.get_movies(query, @current_page)
-       Movie.create(query: query, response: response, page: @current_page, hit_count: 0)
-       movie = Movie.find_by(query: query, page: @current_page)
-       if movie.present?
-         puts movie.hit_count
-         @movies = movie.data
-         @total_pages = movie.total_pages
-         @hit_count = movie.hit_count
-       else
-         flash[:error] = "No movie data found for the given query."
-         redirect_to root_path
-         return
+        movie.delete if movie.present?
+
+        response = TmdbClient.get_movies(query, page)
+        movie = Movie.find_or_create_by(query: query, page: page) do |m|
+         m.response = response
+         m.hit_count = 0
        end
      end
 
-     if @current_page > @total_pages
-       redirect_to "#{@url}?query=#{query}&page=#{@total_pages}"
+     @movie = movie
+
+     if movie.page > (movie.total_pages || 1)
+       redirect_to "#{request.path}?query=#{query}&page=#{movie.total_pages || 1}"
        return
      end
-
-     @pages = pagination(@current_page, @total_pages)
 
      render "index"
   end
@@ -55,4 +42,7 @@ class MoviesController < ApplicationController
   #   * double check the parameter injection
   #   * strong(default) parameters,
   #   * DO NOT STORE SECRETS IN THE CODE AT ALL, EVEN NOT COMMIT IT TO GITHUB(.env gem, environment variables, or rails secret)
+  def search_params
+    params.permit(:query, :page)
+  end
 end

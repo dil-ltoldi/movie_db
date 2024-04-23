@@ -1,12 +1,17 @@
 class Movie < ApplicationRecord
+  include ApplicationHelper
 
-  def data
-    movies_data = JSON.parse(response)
-    movies_data['results']
+  def list
+    parsed_data = JSON.parse(response)
+    parsed_data['results']
   end
 
   def total_pages
-    response_data = JSON.parse(response)
-    response_data['total_pages']
+    parsed_data = JSON.parse(response)
+    parsed_data['total_pages']
+  end
+
+  def pages
+    pagination(page, total_pages)
   end
 end
